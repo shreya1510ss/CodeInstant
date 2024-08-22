@@ -47,6 +47,10 @@ io.on('connection', (socket) => {
     socket.in(roomid).emit(ACTIONS.CODE_CHANGE, { code });
   });
 
+  socket.on(ACTIONS.SYNC_CODE, ({ socketid, code }) => {
+    io.to(socketid).emit(ACTIONS.CODE_CHANGE, { code });
+});
+
   // Handle drawing actions
   socket.on(ACTIONS.DRAW_ACTION, (data) => {
     const { roomid } = data;
@@ -79,6 +83,12 @@ io.on('connection', (socket) => {
     socket.leave();
   });
 });
+
+
+
+
+
+
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
