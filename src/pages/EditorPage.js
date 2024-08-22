@@ -12,7 +12,9 @@ const EditorPage = () => {
     const location = useLocation();
     const reactNavigator = useNavigate();
     const { roomid } = useParams();
+    const codeRef=useRef(null);
     const [clients, setClients] = useState([]);
+    
 
     const socketRef = useRef(null);
     useEffect(() => {
@@ -51,6 +53,10 @@ const EditorPage = () => {
                     }
 
                     setClients(clients);
+                    socketRef.current.emit(ACTIONS.SYNC_CODE, {
+                        code: codeRef.current,
+                        socketid,
+                    });
 
                 });
 
@@ -163,6 +169,7 @@ const EditorPage = () => {
                     <Editor
                      socketRef={socketRef}
                      roomid={roomid}
+                     onCodeChange={(code)=>{codeRef.current=code}}
                      />
                      </div> :
                         <div className='whiteboardWrap'>
